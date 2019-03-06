@@ -1,15 +1,13 @@
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Threading.Tasks;
 
 namespace BookStore.Api.Features.Books
 {
-    [Authorize]
     [ApiController]
     [Route("api/books")]
-    public class BooksController
+    public class BooksController: ControllerBase
     {
         private readonly IMediator _meditator;
 

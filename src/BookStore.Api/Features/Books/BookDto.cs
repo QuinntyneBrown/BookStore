@@ -7,6 +7,8 @@ namespace BookStore.Api.Features.Books
     {        
         public Guid BookId { get; set; }
         public string Name { get; set; }
+        public string Description { get; set; }
+        public string Author { get; set; }
     }
 
     public static class BookExtensions

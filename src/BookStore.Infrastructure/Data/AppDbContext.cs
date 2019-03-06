@@ -1,11 +1,8 @@
 ﻿using BookStore.Core.Entities;
 using BookStore.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace BookStore.Infrastructure.Interfaces
+namespace BookStore.Infrastructure.Data
 {
     public class AppDbContext: DbContext, IAppDbContext
     {
