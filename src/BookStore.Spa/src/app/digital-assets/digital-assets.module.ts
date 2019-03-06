@@ -2,20 +2,20 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from "@angular/common";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { OverlayRefProvider } from './overlay-ref-provider';
-import { OverlayRefWrapper } from './overlay-ref-wrapper';
+import { CoreModule } from '../core/core.module';
+import { SharedModule } from '../shared/shared.module';
+import { DigitalAssetService } from './digital-asset.service';
+import { DigitalAssetInputUrlComponent } from './digital-asset-url-input.component';
 
 const declarations = [
-
+  DigitalAssetInputUrlComponent
 ];
 
 const entryComponents = [
-
 ];
 
 const providers = [
-  OverlayRefProvider,
-  OverlayRefWrapper,
+  DigitalAssetService
 ];
 
 @NgModule({
@@ -25,8 +25,12 @@ const providers = [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterModule	
+    RouterModule,
+
+    CoreModule,
+    SharedModule	
   ],
   providers,
+  exports:declarations
 })
-export class CoreModule { }
+export class DigitalAssetsModule { }
