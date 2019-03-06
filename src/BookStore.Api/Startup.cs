@@ -19,7 +19,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BookStore.API
+namespace BookStore.Api
 {
     public class Startup
     {

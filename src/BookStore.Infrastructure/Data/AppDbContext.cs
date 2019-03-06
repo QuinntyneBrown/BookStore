@@ -6,6 +6,9 @@ namespace BookStore.Infrastructure.Data
 {
     public class AppDbContext: DbContext, IAppDbContext
     {
+        public AppDbContext(DbContextOptions options)
+            :base(options) { }
+
         public DbSet<Book> Books { get; private set; }
     }
 }
