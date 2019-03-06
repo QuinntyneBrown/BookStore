@@ -9,8 +9,7 @@ namespace BookStore.Api
     public class Program
     {
         public static void Main(string[] args)
-        {
-            
+        {            
             var host = CreateWebHostBuilder(args).Build();
 
             ProcessDbCommands(args, host);
