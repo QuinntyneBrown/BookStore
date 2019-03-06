@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace BookStore.Api.Features.DigitalAssets
 {
-    [Route("api/digitialAssets")]
+    [Route("api/digitalAssets")]
     [ApiController]
     public class DigitialAssetsController : ControllerBase
     {

@@ -1,7 +1,7 @@
 using BookStore.Core.Interfaces;
-using BookStore.Core.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -25,10 +25,12 @@ namespace BookStore.Api.Features.Books
             public Handler(IAppDbContext context) => _context = context;
 
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
-                =>  new Response()
+            {                
+                return new Response()
                 {
                     Books = await _context.Books.Select(x => x.ToDto()).ToArrayAsync()
                 };
+            }
         }
     }
 }

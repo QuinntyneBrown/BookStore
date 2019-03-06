@@ -10,5 +10,12 @@ namespace BookStore.Infrastructure.Data
             :base(options) { }
 
         public DbSet<Book> Books { get; private set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.HasDefaultContainerName("BookStoreDocuments");
+
+            base.OnModelCreating(modelBuilder);
+        }   
     }
 }

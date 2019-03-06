@@ -35,6 +35,7 @@ namespace BookStore.Api.Features.Books
                 book.Description = request.Book.Description;
                 book.ImageUrl = request.Book.ImageUrl;
                 book.Author = request.Book.Author;
+                book.Price = request.Book.Price;
 
                 await _context.SaveChangesAsync(cancellationToken);
 

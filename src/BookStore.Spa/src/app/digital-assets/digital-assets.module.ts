@@ -6,6 +6,7 @@ import { CoreModule } from '../core/core.module';
 import { SharedModule } from '../shared/shared.module';
 import { DigitalAssetService } from './digital-asset.service';
 import { DigitalAssetInputUrlComponent } from './digital-asset-url-input.component';
+import { HttpClientModule } from '@angular/common/http';
 
 const declarations = [
   DigitalAssetInputUrlComponent
@@ -24,6 +25,7 @@ const providers = [
   imports: [
     CommonModule,
     FormsModule,
+    HttpClientModule,
     ReactiveFormsModule,
     RouterModule,
 

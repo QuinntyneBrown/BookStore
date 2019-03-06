@@ -1,22 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <UserSecretsId>eddf2b89-851f-4034-b34a-34a5ed618c08</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Features\Identity\**" />
-    <Content Remove="Features\Identity\**" />
-    <EmbeddedResource Remove="Features\Identity\**" />
-    <None Remove="Features\Identity\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="MediatR" Version="6.0.0" />
-    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="6.0.1" />    
-    <PackageReference Include="Microsoft.AspNetCore.App" />    
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="6.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0-preview3-19153-02" />    
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />    
     <PackageReference Include="WindowsAzure.Storage" Version="9.3.3" />
   </ItemGroup>
 
