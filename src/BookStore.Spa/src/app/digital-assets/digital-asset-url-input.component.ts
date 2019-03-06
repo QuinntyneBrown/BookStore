@@ -69,8 +69,8 @@ export class DigitalAssetInputUrlComponent implements ControlValueAccessor {
 
       this._digitalAssetsService.upload({ data })
         .subscribe(x => {
-        this.inputElement.value = x[0];
-        this.onChangeCallback(this.inputElement.value);
+          this.inputElement.value = x.urls[0];
+          this.onChangeCallback(this.inputElement.value);
       });
     }
   }

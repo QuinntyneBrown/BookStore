@@ -2,8 +2,10 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Net.Http.Headers;
 using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Auth;
 using Microsoft.WindowsAzure.Storage.Blob;
 using Microsoft.WindowsAzure.Storage.RetryPolicies;
 using System;
@@ -27,25 +29,32 @@ namespace BookStore.Api.Features.DigitalAssets
         public class Handler : IRequestHandler<Request, Response>
         {
             private readonly CloudBlobClient _cloudBlobClient;
-            private readonly CloudStorageAccount _cloudStorageAccount;
             private readonly IHttpContextAccessor _httpContextAccessor;
-                        
-            public Handler(
-                CloudBlobClient cloudBlobClient,
-                CloudStorageAccount cloudStorageAccount,
-                IHttpContextAccessor httpContextAccessor) {
-                _cloudBlobClient = cloudBlobClient;
-                _cloudStorageAccount = cloudStorageAccount;
-                _httpContextAccessor = httpContextAccessor;
 
-                _cloudBlobClient = _cloudStorageAccount.CreateCloudBlobClient();
+            public Handler(
+                IConfiguration configuration,
+                IHttpContextAccessor httpContextAccessor)
+            {
+
+                _httpContextAccessor = httpContextAccessor;
+                var cloudStorageAccount = new CloudStorageAccount(new StorageCredentials(configuration["Azure:CloudStorage:AccountName"], configuration["Azure:CloudStorage:KeyValue"]), true);
+
+                _cloudBlobClient = cloudStorageAccount.CreateCloudBlobClient();
             }
 
-            public async Task<Response> Handle(Request request, CancellationToken cancellationToken) {
-                
-                var container = _cloudBlobClient.GetContainerReference("images");
-                
-                await container.CreateIfNotExistsAsync();
+            public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
+            {
+
+                var cloudBlobContainer = _cloudBlobClient.GetContainerReference("images");
+
+                await cloudBlobContainer.CreateIfNotExistsAsync();
+
+                var permissions = new BlobContainerPermissions
+                {
+                    PublicAccess = BlobContainerPublicAccessType.Blob
+                };
+
+                await cloudBlobContainer.SetPermissionsAsync(permissions);
 
                 var httpContext = _httpContextAccessor.HttpContext;
 
@@ -65,11 +74,11 @@ namespace BookStore.Api.Features.DigitalAssets
 
                 while (section != null)
                 {
-                    urls.Add(await Upload(container, section));
-                   
+                    urls.Add(await Upload(cloudBlobContainer, section));
+
                     section = await reader.ReadNextSectionAsync();
                 }
-                
+
                 return new Response()
                 {
                     Urls = urls
@@ -77,7 +86,7 @@ namespace BookStore.Api.Features.DigitalAssets
             }
 
             public async Task<string> Upload(CloudBlobContainer container, MultipartSection section)
-            {                
+            {
                 if (ContentDispositionHeaderValue.TryParse(section.ContentDisposition, out var disposition))
                 {
                     if (MultipartRequestHelper.HasFileContentDisposition(disposition))
@@ -95,8 +104,10 @@ namespace BookStore.Api.Features.DigitalAssets
                             blockBlob.Properties.ContentType = $"{section.ContentType}";
 
                             var optionsWithRetryPolicy = new BlobRequestOptions() { RetryPolicy = new LinearRetry(TimeSpan.FromSeconds(20), 4) };
-                            
-                            await blockBlob.UploadFromStreamAsync(targetStream, accessCondition:null, options: optionsWithRetryPolicy, operationContext: null);
+
+                            targetStream.Position = 0;
+
+                            await blockBlob.UploadFromStreamAsync(targetStream, accessCondition: null, options: optionsWithRetryPolicy, operationContext: null);
 
                             return $"{blockBlob.StorageUri.PrimaryUri}";
                         }

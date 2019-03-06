@@ -10,7 +10,7 @@ export class DigitalAssetService {
   ) { }
 
   public upload(options: { data: FormData }): Observable<{ urls: string[] }> {    
-    return this._client.post<{ urls: string[] }>(`${this._baseUrl}api/digitalAssets/upload`,
+    return this._client.post<{ urls: string[] }>(`${this._baseUrl}api/digitalAssets`,
       options.data);
   }  
   
