@@ -8,6 +8,7 @@ namespace BookStore.Api.Features.Books
         public Guid BookId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public string ImageUrl { get; set; }
         public string Author { get; set; }
     }
 
@@ -17,7 +18,10 @@ namespace BookStore.Api.Features.Books
             => new BookDto
             {
                 BookId = book.BookId,
-                Name = book.Name
+                Name = book.Name,
+                Description = book.Description,
+                ImageUrl = book.ImageUrl,
+                Author = book.Author
             };
     }
 }

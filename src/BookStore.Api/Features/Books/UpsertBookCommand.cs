@@ -1,6 +1,5 @@
-using BookStore.Core.Interfaces;
 using BookStore.Core.Entities;
-using FluentValidation;
+using BookStore.Core.Interfaces;
 using MediatR;
 using System;
 using System.Threading;
@@ -10,14 +9,6 @@ namespace BookStore.Api.Features.Books
 {
     public class UpsertBookCommand
     {
-
-        public class Validator: AbstractValidator<Request> {
-            public Validator()
-            {
-                RuleFor(request => request.Book.BookId).NotNull();
-            }
-        }
-
         public class Request : IRequest<Response> {
             public BookDto Book { get; set; }
         }
@@ -41,6 +32,9 @@ namespace BookStore.Api.Features.Books
                 }
 
                 book.Name = request.Book.Name;
+                book.Description = request.Book.Description;
+                book.ImageUrl = request.Book.ImageUrl;
+                book.Author = request.Book.Author;
 
                 await _context.SaveChangesAsync(cancellationToken);
 

@@ -1,5 +1,4 @@
 using BookStore.Core.Interfaces;
-using FluentValidation;
 using MediatR;
 using System;
 using System.Threading;
@@ -9,14 +8,6 @@ namespace BookStore.Api.Features.Books
 {
     public class RemoveBookCommand
     {
-        public class Validator : AbstractValidator<Request>
-        {
-            public Validator()
-            {
-                RuleFor(request => request.BookId).NotNull();
-            }
-        }
-
         public class Request: IRequest
         {
             public Guid BookId { get; set; }

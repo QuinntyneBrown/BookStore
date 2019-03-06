@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Net.Http.Headers;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.WindowsAzure.Storage.RetryPolicies;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
@@ -19,7 +21,7 @@ namespace BookStore.Api.Features.DigitalAssets
 
         public class Response
         {
-            public List<string> Urls { get;set; }
+            public List<string> Urls { get; set; }
         }
 
         public class Handler : IRequestHandler<Request, Response>
@@ -40,9 +42,9 @@ namespace BookStore.Api.Features.DigitalAssets
             }
 
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken) {
-
+                
                 var container = _cloudBlobClient.GetContainerReference("images");
-
+                
                 await container.CreateIfNotExistsAsync();
 
                 var httpContext = _httpContextAccessor.HttpContext;
@@ -92,7 +94,9 @@ namespace BookStore.Api.Features.DigitalAssets
 
                             blockBlob.Properties.ContentType = $"{section.ContentType}";
 
-                            await blockBlob.UploadFromStreamAsync(targetStream);
+                            var optionsWithRetryPolicy = new BlobRequestOptions() { RetryPolicy = new LinearRetry(TimeSpan.FromSeconds(20), 4) };
+                            
+                            await blockBlob.UploadFromStreamAsync(targetStream, accessCondition:null, options: optionsWithRetryPolicy, operationContext: null);
 
                             return $"{blockBlob.StorageUri.PrimaryUri}";
                         }

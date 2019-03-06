@@ -16,9 +16,5 @@ namespace BookStore.Api.Features.DigitalAssets
         [HttpPost(""), DisableRequestSizeLimit]
         public async Task<ActionResult<UploadDigitalAssetCommand.Response>> Upload()
             => await _mediator.Send(new UploadDigitalAssetCommand.Request());
-
-        [HttpGet("serve/{filename}")]
-        public async Task<ActionResult<GetDigitalAssetByFileNameQuery.Response>> Serve(GetDigitalAssetByFileNameQuery.Request request)
-            => await _mediator.Send(request);
     }
 }
