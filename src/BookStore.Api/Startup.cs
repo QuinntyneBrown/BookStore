@@ -2,13 +2,11 @@
 using BookStore.Infrastructure.Data;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Swashbuckle.AspNetCore.Swagger;
 
 namespace BookStore.Api
 {
@@ -33,19 +31,6 @@ namespace BookStore.Api
 
             services.AddScoped<IAppDbContext, AppDbContext>();
             
-            
-            services.AddSwaggerGen(options =>
-            {
-                options.DescribeAllEnumsAsStrings();
-                options.SwaggerDoc("v1", new Info
-                {
-                    Title = "Book Store",
-                    Version = "v1",
-                    Description = "Book Store Api",
-                });
-                options.CustomSchemaIds(x => x.FullName);
-            });
-
             services.AddEntityFrameworkCosmos();
 
             services.AddDbContext<AppDbContext>(options =>

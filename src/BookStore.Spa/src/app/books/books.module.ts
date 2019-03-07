@@ -4,27 +4,25 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CoreModule } from '../core/core.module';
 import { SharedModule } from '../shared/shared.module';
-import { BookPageComponent } from './book-page.component';
 import { BooksPageComponent } from './books-page.component';
 import { BookService } from './book.service';
 import { DigitalAssetsModule } from '../digital-assets/digital-assets.module';
-import { EditBookOverlayComponent } from './edit-book-overlay.component';
-import { EditBookOverlay } from './edit-book-overlay';
 import { HttpClientModule } from '@angular/common/http';
+import { BookUpsertOverlayComponent } from './book-upsert-overlay.component';
+import { BookUpsertOverlay } from './book-upsert-overlay';
 
 const declarations = [
-  BookPageComponent,
   BooksPageComponent,
-  EditBookOverlayComponent
+  BookUpsertOverlayComponent
 ];
 
 const entryComponents = [
-  EditBookOverlayComponent
+  BookUpsertOverlayComponent
 ];
 
 const providers = [
   BookService,
-  EditBookOverlay
+  BookUpsertOverlay
 ];
 
 @NgModule({

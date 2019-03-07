@@ -1,7 +1,10 @@
 import { Component } from "@angular/core";
 import { Subject } from "rxjs";
+import { MatTableDataSource } from '@angular/material';
+import { tap, takeUntil, map } from 'rxjs/operators';
 import { BookService } from './book.service';
-import { EditBookOverlay } from './edit-book-overlay';
+import { BookUpsertOverlay } from './book-upsert-overlay';
+import { Book } from './book.model';
 
 @Component({
   templateUrl: "./books-page.component.html",
@@ -11,22 +14,72 @@ import { EditBookOverlay } from './edit-book-overlay';
 export class BooksPageComponent { 
   constructor(
     private readonly _bookService: BookService,
-    private readonly _editBookOverlay: EditBookOverlay
-  ) {
+    private readonly _bookUpsertOverlay: BookUpsertOverlay
+  ) { }
 
-  }
+  public dataSource = new MatTableDataSource<Book>([]);
 
-  public ngAfterViewInit() {
-    setTimeout(() =>{
-        this._editBookOverlay
-      .create()
+  ngOnInit() {
+    this._bookService
+      .get()
+      .pipe(
+        tap(x => {
+          this.dataSource = new MatTableDataSource<Book>(x);
+        }),
+        takeUntil(this.onDestroy)
+      )
       .subscribe();
-    },1000)
-
   }
+
+  public readonly columnsToDisplay: string[] = ['bookId', 'name', 'edit', 'delete'];
+
+  public onCreate() {
+    this.createUpsertOverlay();
+  }
+
+  public onEdit(book:Book) {
+    this.createUpsertOverlay(book);
+  }
+
+  public onDelete(book:Book) {
+    this._bookService.remove({book})
+    .subscribe(() => {
+      let data = this.dataSource.data.slice(0);
+      let idx = data.findIndex(x => x.bookId == book.bookId);
+      data.splice(idx,1);
+      this.dataSource = new MatTableDataSource<Book>(data);
+    });
+  }
+
   public onDestroy: Subject<void> = new Subject<void>();
 
-  ngOnDestroy() {
-    this.onDestroy.next();	
+  public createUpsertOverlay(book: Book = <Book>{}) {    
+    this._bookUpsertOverlay.create({
+      source: {
+        bookId: book.bookId
+      }
+    })
+    .pipe(
+      tap(result => {
+        
+        if (!result) return;
+
+        let data = this.dataSource.data.slice(0);
+
+        let idx = data.findIndex(x => x.bookId == result.bookId);
+
+        if (idx == -1) {
+          data.push(result);
+        } else {
+          data[idx] = result;
+        }
+
+        this.dataSource = new MatTableDataSource<Book>(data);
+      }),
+      takeUntil(this.onDestroy)
+    )
+    .subscribe();
   }
+
+  ngOnDestroy() { this.onDestroy.next(); }
 }

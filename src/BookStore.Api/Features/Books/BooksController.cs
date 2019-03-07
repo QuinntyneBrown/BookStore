@@ -22,7 +22,7 @@ namespace BookStore.Api.Features.Books
         [HttpGet("{bookId}")]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(GetBookByIdQuery.Response), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<GetBookByIdQuery.Response>> GetById(GetBookByIdQuery.Request request)
+        public async Task<ActionResult<GetBookByIdQuery.Response>> GetById([FromRoute]GetBookByIdQuery.Request request)
             => await _meditator.Send(request);
 
         [HttpPost]
@@ -31,10 +31,10 @@ namespace BookStore.Api.Features.Books
         public async Task<ActionResult<UpsertBookCommand.Response>> Upsert(UpsertBookCommand.Request request)
             => await _meditator.Send(request);
 
-        [HttpDelete]
+        [HttpDelete("{bookId}")]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(Unit), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<Unit>> Remove([FromQuery]RemoveBookCommand.Request request)
+        public async Task<ActionResult<Unit>> Remove([FromRoute]RemoveBookCommand.Request request)
             => await _meditator.Send(request);
     }
 }

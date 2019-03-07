@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using BookStore.Infrastructure.Data;
+﻿using BookStore.Infrastructure.Data;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+using System;
+using System.Linq;
 
 namespace BookStore.Api
 {
@@ -35,11 +30,14 @@ namespace BookStore.Api
             {
                 var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
-                if (args.Contains("migratedb")) {
+                if (args.Contains("dropdb"))
                     context.Database.EnsureDeleted();
+
+                if (args.Contains("createdb"))
                     context.Database.EnsureCreated();
+                
+                if (args.Contains("createdb") || args.Contains("dropdb"))
                     Environment.Exit(0);
-                }                
             }
         }
     }

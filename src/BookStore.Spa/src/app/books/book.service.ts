@@ -29,12 +29,8 @@ export class BookService {
     return this._client.delete<void>(`${this._baseUrl}api/books/${options.book.bookId}`);
   }
 
-  public create(options: { book: Book }): Observable<{ bookId: string }> {
+  public upsert(options: { book: Book }): Observable<{ bookId: string }> {
     return this._client.post<{ bookId: string }>(`${this._baseUrl}api/books`, { book: options.book });
-  }
-
-  public update(options: { book: Book }): Observable<{ bookId: string }> {
-    return this._client.put<{ bookId: string }>(`${this._baseUrl}api/books`, { book: options.book });
   }
 
   private get _baseUrl() { return environment.baseUrl; }

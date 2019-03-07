@@ -28,7 +28,7 @@ namespace BookStore.Api.Features.Books
             {                
                 return new Response()
                 {
-                    Books = await _context.Books.Select(x => x.ToDto()).ToArrayAsync()
+                    Books = await _context.Books.Select(x => x.ToDto()).ToArrayAsync(cancellationToken)
                 };
             }
         }

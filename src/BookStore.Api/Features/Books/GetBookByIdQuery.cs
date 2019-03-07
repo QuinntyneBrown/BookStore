@@ -25,7 +25,7 @@ namespace BookStore.Api.Features.Books
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
                 => new Response()
                 {
-                    Book = (await _context.Books.FindAsync(request.BookId)).ToDto()
+                    Book = (await _context.Books.FindAsync(request.BookId, cancellationToken)).ToDto()
                 };
         }
     }

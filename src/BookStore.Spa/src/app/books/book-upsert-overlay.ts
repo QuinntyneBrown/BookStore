@@ -1,14 +1,14 @@
 import { Injectable, Injector } from "@angular/core";
 import { OverlayService } from "../core/overlay.service";
 import { OverlayRefProvider } from "../core/overlay-ref-provider";
-import { EditBookOverlayComponent } from "./edit-book-overlay.component";
+import { BookUpsertOverlayComponent } from "./book-upsert-overlay.component";
 
 @Injectable()
-export class EditBookOverlay extends OverlayService<EditBookOverlayComponent> {
+export class BookUpsertOverlay extends OverlayService<BookUpsertOverlayComponent> {
   constructor(
     public injector: Injector,
     public overlayRefProvider: OverlayRefProvider
   ) {
-    super(injector, overlayRefProvider, EditBookOverlayComponent);
+    super(injector, overlayRefProvider, BookUpsertOverlayComponent);
   }
 }
