@@ -1,6 +1,8 @@
 ﻿using BookStore.Core.Entities;
 using BookStore.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace BookStore.Infrastructure.Data
 {
@@ -16,6 +18,7 @@ namespace BookStore.Infrastructure.Data
             modelBuilder.HasDefaultContainerName("BookStoreDocuments");
 
             base.OnModelCreating(modelBuilder);
-        }   
+        }
+
     }
 }

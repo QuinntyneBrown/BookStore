@@ -15,8 +15,7 @@ namespace BookStore.Api
     public class Program
     {
         public static void Main(string[] args)
-        {
-            
+        {            
             var host = CreateWebHostBuilder(args).Build();
 
             ProcessDbCommands(args, host);
@@ -36,17 +35,11 @@ namespace BookStore.Api
             {
                 var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
-                if (args.Contains("ci"))
-                    args = new string[3] { "dropdb", "migratedb", "stop" };
-
-                if (args.Contains("dropdb"))
+                if (args.Contains("migratedb")) {
                     context.Database.EnsureDeleted();
-
-                if (args.Contains("migratedb"))
                     context.Database.EnsureCreated();
-
-                if (args.Contains("stop"))
                     Environment.Exit(0);
+                }                
             }
         }
     }

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace BookStore.Api
@@ -49,10 +50,20 @@ namespace BookStore.Api
 
             services.AddDbContext<AppDbContext>(options =>
             {
+
+                services.AddLogging(builder =>
+                   builder.AddConsole()
+                          .AddFilter("", LogLevel.Debug));
+
+                var loggerFactory = services.BuildServiceProvider()
+                        .GetService<ILoggerFactory>();
+
                 options.UseCosmos(
                     Configuration["CosmosDb:EndpointUrl"],
                     Configuration["CosmosDb:PrivateKey"],
-                    Configuration["CosmosDb:DbName"]);
+                    Configuration["CosmosDb:DbName"])
+                    .UseLoggerFactory(loggerFactory)
+                    .EnableSensitiveDataLogging();
             });
 
             services.AddMediatR(typeof(Startup));
@@ -64,16 +75,8 @@ namespace BookStore.Api
                 .SetCompatibilityVersion(CompatibilityVersion.Latest);
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
-            app.UseSwagger();
-
-            app.UseSwaggerUI(options =>
-            {
-                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Book Store Api");
-                options.RoutePrefix = string.Empty;
-            });
-
             app.UseCors("CorsPolicy");
             app.UseHttpsRedirection();
             app.UseMvc();
