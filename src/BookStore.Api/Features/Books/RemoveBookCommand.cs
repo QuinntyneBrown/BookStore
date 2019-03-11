@@ -21,7 +21,7 @@ namespace BookStore.Api.Features.Books
 
             public async Task<Unit> Handle(Request request, CancellationToken cancellationToken)
             {
-                var book = await _context.Books.FindAsync(request.BookId, cancellationToken);
+                var book = await _context.Books.FindAsync(request.BookId);
 
                 _context.Books.Remove(book);
 
