@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Books\" />
+    <Folder Include="Features\Tags\" />
   </ItemGroup>
 
 </Project>

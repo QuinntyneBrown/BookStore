@@ -36,6 +36,9 @@ import {
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
+import { IgxTreeGridModule } from "igniteui-angular";
+import { AutoCompleteChipListModule } from './auto-complete-chip-list/auto-complete-chip-list.module';
+
 const declarations = [
 ];
 
@@ -77,7 +80,10 @@ const declarations = [
 
     CommonModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+
+    IgxTreeGridModule,
+    AutoCompleteChipListModule
   ],
   exports: [
     MatAutocompleteModule,
@@ -114,8 +120,10 @@ const declarations = [
     MatTooltipModule,
 
     FormsModule,
-    ReactiveFormsModule
-   
+    ReactiveFormsModule,
+
+    AutoCompleteChipListModule,
+    IgxTreeGridModule   
   ],
   providers:[]
 })

@@ -37,6 +37,11 @@ namespace BookStore.Api.Features.Books
                 book.Author = request.Book.Author;
                 book.Price = request.Book.Price;
 
+                book.BookTags.Clear();
+
+                foreach (var tag in request.Book.Tags)
+                    book.BookTags.Add(new BookTag { TagId = tag.TagId });
+
                 await _context.SaveChangesAsync(cancellationToken);
 
                 return new Response() { BookId = book.BookId };

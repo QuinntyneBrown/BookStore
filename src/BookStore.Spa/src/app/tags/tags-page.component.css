@@ -1,0 +1,12 @@
+:host {
+  display: block;
+  padding: 30px 20px 0px 20px;
+}
+
+button, table {
+  margin: 10px 0px;
+}
+
+table {
+  width: 100%;
+}

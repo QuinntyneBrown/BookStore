@@ -1,21 +1,20 @@
 using BookStore.Core.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace BookStore.Api.Features.Books
+namespace BookStore.Api.Features.Tags
 {
-    public class GetBooksQuery
+    public class GetTagsQuery
     {
         public class Request : IRequest<Response> { }
 
         public class Response
         {
-            public IEnumerable<BookDto> Books { get; set; }
+            public IEnumerable<TagDto> Tags { get; set; }
         }
 
         public class Handler : IRequestHandler<Request, Response>
@@ -25,15 +24,10 @@ namespace BookStore.Api.Features.Books
             public Handler(IAppDbContext context) => _context = context;
 
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
-            {                
-                return new Response()
+                =>  new Response()
                 {
-                    Books = await _context.Books
-                    .Include(x => x.BookTags)
-                    .ThenInclude(x => x.Tag)
-                    .Select(x => x.ToDto()).ToArrayAsync(cancellationToken)
+                    Tags = await _context.Tags.Select(x => x.ToDto()).ToArrayAsync()
                 };
-            }
         }
     }
 }

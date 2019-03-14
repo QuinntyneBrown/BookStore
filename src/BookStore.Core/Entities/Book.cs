@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace BookStore.Core.Entities
 {
@@ -10,5 +12,7 @@ namespace BookStore.Core.Entities
         public float Price { get; set; }
         public string ImageUrl { get; set; }
         public string Author { get; set; }
+        public ICollection<BookTag> BookTags { get; set; }
+        = new HashSet<BookTag>();
     }
 }

@@ -1,0 +1,4 @@
+{
+  "RootNamespace": "BookStore",
+  "EntityFrameworkCore": "true"
+}
