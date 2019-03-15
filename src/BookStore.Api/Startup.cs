@@ -1,23 +1,20 @@
-﻿using BookStore.Core.Interfaces;
-using BookStore.Infrastructure.Data;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using BookStore.Api.Data;
+using BookStore.Api.Interfaces;
 using MediatR;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Primitives;
-using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace BookStore.Api
 {
@@ -32,32 +29,21 @@ namespace BookStore.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(options => options.AddPolicy("CorsPolicy",
-                builder => builder
-                .WithOrigins("http://localhost:4200")
-                .AllowAnyMethod()
-                .AllowAnyHeader()
-                .SetIsOriginAllowed(isOriginAllowed: _ => true)
-                .AllowCredentials()));
+            services.AddMediatR(typeof(Startup));
 
-            services.AddScoped<IAppDbContext, AppDbContext>();
-            
+            services.AddTransient<IAppDbContext, AppDbContext>();
+
             services.AddDbContext<AppDbContext>(options =>
             {
                 options
-                .UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"], b => b.MigrationsAssembly("CodeWithQB.Infrastructure"));
+                .UseInMemoryDatabase(databaseName: $"BookStoreInMemoryDatabase");
             });
 
-            services.AddMediatR(typeof(Startup));
-
-            services.AddHttpContextAccessor();
-            
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc();
         }
 
         public void Configure(IApplicationBuilder app)
         {
-            app.UseHttpsRedirection();
             app.UseMvc();
         }
     }

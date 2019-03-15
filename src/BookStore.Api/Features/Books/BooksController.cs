@@ -7,7 +7,7 @@ namespace BookStore.Api.Features.Books
 {
     [ApiController]
     [Route("api/books")]
-    public class BooksController: ControllerBase
+    public class BooksController
     {
         private readonly IMediator _meditator;
 

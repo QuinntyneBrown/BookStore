@@ -1,4 +1,4 @@
-using BookStore.Core.Entities;
+using BookStore.Api.Entities;
 using System;
 
 namespace BookStore.Api.Features.Books
@@ -7,9 +7,6 @@ namespace BookStore.Api.Features.Books
     {        
         public Guid BookId { get; set; }
         public string Name { get; set; }
-        public string Description { get; set; }
-        public string ImageUrl { get; set; }
-        public string Author { get; set; }
     }
 
     public static class BookExtensions
@@ -18,10 +15,7 @@ namespace BookStore.Api.Features.Books
             => new BookDto
             {
                 BookId = book.BookId,
-                Name = book.Name,
-                Description = book.Description,
-                ImageUrl = book.ImageUrl,
-                Author = book.Author
+                Name = book.Name
             };
     }
 }

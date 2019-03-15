@@ -1,5 +1,5 @@
-using BookStore.Core.Entities;
-using BookStore.Core.Interfaces;
+using BookStore.Api.Interfaces;
+using BookStore.Api.Entities;
 using MediatR;
 using System;
 using System.Threading;
@@ -32,9 +32,6 @@ namespace BookStore.Api.Features.Books
                 }
 
                 book.Name = request.Book.Name;
-                book.Description = request.Book.Description;
-                book.ImageUrl = request.Book.ImageUrl;
-                book.Author = request.Book.Author;
 
                 await _context.SaveChangesAsync(cancellationToken);
 

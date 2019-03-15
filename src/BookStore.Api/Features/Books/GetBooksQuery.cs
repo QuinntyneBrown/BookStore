@@ -1,5 +1,5 @@
-using BookStore.Core.Interfaces;
-using BookStore.Core.Entities;
+using BookStore.Api.Interfaces;
+using BookStore.Api.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;

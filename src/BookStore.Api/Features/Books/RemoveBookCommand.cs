@@ -1,4 +1,4 @@
-using BookStore.Core.Interfaces;
+using BookStore.Api.Interfaces;
 using MediatR;
 using System;
 using System.Threading;
@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace BookStore.Api.Features.Books
 {
     public class RemoveBookCommand
-    {
+    {        
         public class Request: IRequest
         {
             public Guid BookId { get; set; }

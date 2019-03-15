@@ -1,4 +1,4 @@
-using BookStore.Core.Interfaces;
+using BookStore.Api.Interfaces;
 using MediatR;
 using System;
 using System.Threading;

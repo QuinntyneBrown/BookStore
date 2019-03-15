@@ -1,0 +1,12 @@
+version: '3.4'
+
+services:
+  bookstore.api:
+    image: ${DOCKER_REGISTRY-}bookstoreapi
+    build:
+      context: .
+      dockerfile: src/BookStore.Api/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "8081:80"
