@@ -35,7 +35,7 @@ namespace BookStore.Api
             services.AddSwaggerGen(options =>
             {
                 options.DescribeAllEnumsAsStrings();
-                options.SwaggerDoc("v1", new Info
+                options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
                 {
                     Title = "Book Store",
                     Version = "v1",
@@ -77,22 +77,6 @@ namespace BookStore.Api
 
         public void Configure(IApplicationBuilder app)
         {
-            //var provider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "swagger"));
-
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                //FileProvider = provider,
-                RequestPath = "/swagger",
-                ServeUnknownFileTypes = true
-            });
-
-            //app.UseDirectoryBrowser(new DirectoryBrowserOptions
-            //{
-            //    FileProvider = provider,
-            //    RequestPath = "/swagger"
-            //});
-
-            //app.UseStaticFiles();
 
             app.UseSwagger();
 
