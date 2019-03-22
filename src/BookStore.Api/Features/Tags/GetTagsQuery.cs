@@ -26,7 +26,10 @@ namespace BookStore.Api.Features.Tags
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
                 =>  new Response()
                 {
-                    Tags = await _context.Tags.Select(x => x.ToDto()).ToArrayAsync()
+                    Tags = await _context.Tags
+                    .Include(x => x.BookTags)
+                    .ThenInclude(x => x.Book)
+                    .Select(x => x.ToDto()).ToArrayAsync()
                 };
         }
     }

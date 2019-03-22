@@ -6,6 +6,8 @@ import { map, switchMap, tap, takeUntil } from "rxjs/operators";
 import { OverlayRefWrapper } from '../core/overlay-ref-wrapper';
 import { BookService } from './book.service';
 import { Book } from './book.model';
+import { Tag } from '../tags/tag.model';
+import { TagService } from '../tags/tag.service';
 
 @Component({
   templateUrl: "./book-upsert-overlay.component.html",
@@ -16,6 +18,7 @@ import { Book } from './book.model';
 export class BookUpsertOverlayComponent { 
   constructor(
     private _bookService: BookService,
+    private _tagService: TagService,
     private _overlay: OverlayRefWrapper) { }
 
   ngOnInit() {
@@ -30,7 +33,13 @@ export class BookUpsertOverlayComponent {
           }))
         )
         .subscribe();
+
+        this._tagService.get()
+        .pipe(takeUntil(this.onDestroy))
+        .subscribe(x => this.items$.next(x));        
   }
+
+  items$: BehaviorSubject<Tag[]> = new BehaviorSubject([]);
 
   public onDestroy: Subject<void> = new Subject<void>();
 
@@ -38,8 +47,10 @@ export class BookUpsertOverlayComponent {
     this.onDestroy.next();	
   }
 
-  public book$: BehaviorSubject<Book> = new BehaviorSubject(<Book>{});
+  public book$: BehaviorSubject<Book> = new BehaviorSubject(<Book>{ tags: []});
   
+  selectedItems: any[] = this.book$.value.tags;
+
   public bookId: string;
 
   public handleCancelClick() {
@@ -48,7 +59,8 @@ export class BookUpsertOverlayComponent {
 
   public form: FormGroup = new FormGroup({
     bookId: new FormControl("00000000-0000-0000-0000-000000000000",[]),
-    name: new FormControl(null, []),    
+    name: new FormControl(null, []), 
+    tags: new FormControl()   
   });
 
   public handleSave(book:Book) {

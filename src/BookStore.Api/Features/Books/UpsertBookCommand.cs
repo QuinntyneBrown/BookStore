@@ -1,6 +1,7 @@
 using BookStore.Core.Entities;
 using BookStore.Core.Interfaces;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -39,8 +40,12 @@ namespace BookStore.Api.Features.Books
 
                 book.BookTags.Clear();
 
-                foreach (var tag in request.Book.Tags)
-                    book.BookTags.Add(new BookTag { TagId = tag.TagId });
+                foreach (var tagName in request.Book.Tags)
+                {
+                    var tagId = (await _context.Tags.SingleAsync(x => x.Name == tagName)).TagId;
+
+                    book.BookTags.Add(new BookTag { TagId = tagId });
+                }
 
                 await _context.SaveChangesAsync(cancellationToken);
 

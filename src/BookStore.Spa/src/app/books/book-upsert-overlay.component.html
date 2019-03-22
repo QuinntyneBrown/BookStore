@@ -5,6 +5,11 @@
     <input matInput placeholder="Name" id="name" formControlName="name">
   </mat-form-field>
 
+  <app-auto-complete-chip-list [items$]="items$"
+                               [selectedItems]="selectedItems"
+                               formControlName="tags">
+  </app-auto-complete-chip-list>
+
   <button mat-button (click)="handleCancelClick()">Cancel</button>
   <button mat-button (click)="handleSave(this.form.value)">Save</button>
 

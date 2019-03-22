@@ -7,6 +7,10 @@ const routes: Routes = [
   {
     path:"",
     component: BooksPageComponent    
+  },  
+  {
+    path:"books",
+    component: BooksPageComponent    
   },
   {
     path:"tags",

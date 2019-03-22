@@ -1,5 +1,4 @@
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Threading.Tasks;
@@ -32,10 +31,10 @@ namespace BookStore.Api.Features.Tags
         public async Task<ActionResult<UpsertTagCommand.Response>> Upsert(UpsertTagCommand.Request request)
             => await _meditator.Send(request);
 
-        [HttpDelete]
+        [HttpDelete("{tagId}")]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(Unit), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<Unit>> Remove([FromQuery]RemoveTagCommand.Request request)
+        public async Task<ActionResult<Unit>> Remove([FromRoute]RemoveTagCommand.Request request)
             => await _meditator.Send(request);
     }
 }

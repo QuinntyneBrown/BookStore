@@ -15,8 +15,8 @@ namespace BookStore.Api.Features.Books
         public float Price { get; set; }
         public string ImageUrl { get; set; }
         public string Author { get; set; }
-        public ICollection<TagDto> Tags { get; set; }
-        = new HashSet<TagDto>();
+        public ICollection<string> Tags { get; set; }
+        = new HashSet<string>();
 
     }
 
@@ -33,7 +33,7 @@ namespace BookStore.Api.Features.Books
                 ImageUrl = book.ImageUrl,
                 Author = book.Author,
                 Tags = book.BookTags
-                .Select(x => x.Tag.ToDto())
+                .Select(x => x.Tag.Name)
                 .ToList()
             };
         }

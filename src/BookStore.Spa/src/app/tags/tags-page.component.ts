@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { Subject } from "rxjs";
+import { Subject, BehaviorSubject } from "rxjs";
 import { TagService } from './tag.service';
 import { TagUpsertOverlay } from './tag-upsert-overlay';
 import { MatTableDataSource } from '@angular/material';
@@ -27,7 +27,10 @@ export class TagsPageComponent {
     this._tagService
     .get()
     .pipe(
-      tap(x => this.dataSource = new MatTableDataSource<Tag>(x))
+      tap(x => {
+        this.dataSource = new MatTableDataSource<Tag>(x);
+        this.tags$.next(x);
+      })
     ).subscribe();
   }
 
@@ -71,6 +74,7 @@ export class TagsPageComponent {
           }
 
           this.dataSource = new MatTableDataSource<Tag>(data);
+          this.tags$.next(data);
         }),
         takeUntil(this.onDestroy)
       )
@@ -82,4 +86,6 @@ export class TagsPageComponent {
   ngOnDestroy() {
     this.onDestroy.next();	
   }
+
+  public tags$:BehaviorSubject<Tag[]> = new BehaviorSubject([]);
 }
