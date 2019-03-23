@@ -1,13 +1,12 @@
 import { Component } from "@angular/core";
 import { Subject, BehaviorSubject } from "rxjs";
 import { FormGroup, FormControl } from "@angular/forms";
-
 import { map, switchMap, tap, takeUntil } from "rxjs/operators";
 import { OverlayRefWrapper } from '../core/overlay-ref-wrapper';
-import { BookService } from './book.service';
 import { Book } from './book.model';
 import { Tag } from '../tags/tag.model';
 import { TagService } from '../tags/tag.service';
+import { BookService } from './book.service';
 
 @Component({
   templateUrl: "./book-upsert-overlay.component.html",
