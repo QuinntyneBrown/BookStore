@@ -1,10 +1,11 @@
-import { Component } from "@angular/core";
-import { Subject } from "rxjs";
+import { Component, ViewChild } from "@angular/core";
+import { Subject, BehaviorSubject } from "rxjs";
 import { MatTableDataSource } from '@angular/material';
 import { tap, takeUntil, map } from 'rxjs/operators';
 import { BookService } from './book.service';
 import { BookUpsertOverlay } from './book-upsert-overlay';
 import { Book } from './book.model';
+import { IgxGridCommonModule, IgxGridComponent } from 'igniteui-angular';
 
 @Component({
   templateUrl: "./books-page.component.html",
@@ -17,14 +18,19 @@ export class BooksPageComponent {
     private readonly _bookUpsertOverlay: BookUpsertOverlay
   ) { }
 
+  @ViewChild('booksGrid', { read: IgxGridComponent })
+  public grid: IgxGridCommonModule;
+
   public dataSource = new MatTableDataSource<Book>([]);
+
+  public books$: BehaviorSubject<Book[]> = new BehaviorSubject([]);
 
   ngOnInit() {
     this._bookService
       .get()
       .pipe(
         tap(x => {
-          this.dataSource = new MatTableDataSource<Book>(x);
+          this.books$.next(x);
         }),
         takeUntil(this.onDestroy)
       )

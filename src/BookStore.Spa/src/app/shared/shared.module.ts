@@ -36,7 +36,7 @@ import {
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
-import { IgxTreeGridModule } from "igniteui-angular";
+import { IgxTreeGridModule, IgxGridModule } from "igniteui-angular";
 import { AutoCompleteChipListModule } from './auto-complete-chip-list/auto-complete-chip-list.module';
 import { HeaderModule } from './header/header.module';
 
@@ -86,6 +86,8 @@ const declarations = [
 
     HeaderModule,
     IgxTreeGridModule,
+    IgxGridModule,
+
     AutoCompleteChipListModule
   ],
   exports: [
@@ -127,6 +129,8 @@ const declarations = [
 
     AutoCompleteChipListModule,
     HeaderModule,
+
+    IgxGridModule,
     IgxTreeGridModule   
   ],
   providers:[]
