@@ -4,8 +4,6 @@ import { FormGroup, FormControl } from "@angular/forms";
 import { map, switchMap, tap, takeUntil } from "rxjs/operators";
 import { OverlayRefWrapper } from '../core/overlay-ref-wrapper';
 import { Book } from './book.model';
-import { Tag } from '../tags/tag.model';
-import { TagService } from '../tags/tag.service';
 import { BookService } from './book.service';
 
 @Component({
@@ -17,7 +15,6 @@ import { BookService } from './book.service';
 export class BookUpsertOverlayComponent { 
   constructor(
     private _bookService: BookService,
-    private _tagService: TagService,
     private _overlay: OverlayRefWrapper) { }
 
   ngOnInit() {
@@ -28,17 +25,11 @@ export class BookUpsertOverlayComponent {
           switchMap(x => this.book$),
           map(x => this.form.patchValue({
             bookId: x.bookId,
-            name: x.name            
+            title: x.title            
           }))
         )
-        .subscribe();
-
-        this._tagService.get()
-        .pipe(takeUntil(this.onDestroy))
-        .subscribe(x => this.items$.next(x));        
+        .subscribe();       
   }
-
-  items$: BehaviorSubject<Tag[]> = new BehaviorSubject([]);
 
   public onDestroy: Subject<void> = new Subject<void>();
 
@@ -46,9 +37,7 @@ export class BookUpsertOverlayComponent {
     this.onDestroy.next();	
   }
 
-  public book$: BehaviorSubject<Book> = new BehaviorSubject(<Book>{ tags: []});
-  
-  selectedItems: any[] = this.book$.value.tags;
+  public book$: BehaviorSubject<Book> = new BehaviorSubject(<Book>{ });
 
   public bookId: string;
 
@@ -58,13 +47,13 @@ export class BookUpsertOverlayComponent {
 
   public form: FormGroup = new FormGroup({
     bookId: new FormControl("00000000-0000-0000-0000-000000000000",[]),
-    name: new FormControl(null, []), 
-    tags: new FormControl()   
+    title: new FormControl(null, [])  
   });
 
-  public handleSave(book:Book) {
-    this._bookService.upsert({book})
-    .pipe(map(x => {
+  public handleSave(book:Book) { 
+    
+    this._bookService.upsert({ book})    
+    .pipe(map(x => {      
       book.bookId = x.bookId;
     }))
     .subscribe(_ => {

@@ -2,4 +2,21 @@
 
 <button mat-raised-button (click)="onCreate()">Create</button>
 
-<igx-grid #myGrid id="grid1" [data]="books$ | async" [autoGenerate]="true"></igx-grid>
+<igx-grid [data]="books$ | async" [autoGenerate]="false">
+    <igx-column [field]="'bookId'" [header]="'Book Id'"></igx-column>
+    <igx-column [field]="'title'" [header]="'Title'"></igx-column>
+    <igx-column>
+        <ng-template igxCell let-cell="cell">
+          <button mat-icon-button (click)="onEdit(cell.cellID.rowID)">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </ng-template>
+      </igx-column>     
+    <igx-column>
+        <ng-template igxCell let-cell="cell">
+          <button mat-icon-button (click)="onDelete(cell.cellID.rowID)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </ng-template>
+      </igx-column> 
+</igx-grid>

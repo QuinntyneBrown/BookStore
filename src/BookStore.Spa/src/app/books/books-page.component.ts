@@ -1,11 +1,9 @@
-import { Component, ViewChild } from "@angular/core";
+import { Component } from "@angular/core";
 import { Subject, BehaviorSubject } from "rxjs";
-import { MatTableDataSource } from '@angular/material';
-import { tap, takeUntil, map } from 'rxjs/operators';
+import { tap, takeUntil } from 'rxjs/operators';
 import { BookService } from './book.service';
 import { BookUpsertOverlay } from './book-upsert-overlay';
 import { Book } from './book.model';
-import { IgxGridCommonModule, IgxGridComponent } from 'igniteui-angular';
 
 @Component({
   templateUrl: "./books-page.component.html",
@@ -17,11 +15,6 @@ export class BooksPageComponent {
     private readonly _bookService: BookService,
     private readonly _bookUpsertOverlay: BookUpsertOverlay
   ) { }
-
-  @ViewChild('booksGrid', { read: IgxGridComponent })
-  public grid: IgxGridCommonModule;
-
-  public dataSource = new MatTableDataSource<Book>([]);
 
   public books$: BehaviorSubject<Book[]> = new BehaviorSubject([]);
 
@@ -37,8 +30,6 @@ export class BooksPageComponent {
       .subscribe();
   }
 
-  public readonly columnsToDisplay: string[] = ['bookId', 'name', 'edit', 'delete'];
-
   public onCreate() {
     this.createUpsertOverlay();
   }
@@ -50,10 +41,10 @@ export class BooksPageComponent {
   public onDelete(book:Book) {
     this._bookService.remove({book})
     .subscribe(() => {
-      let data = this.dataSource.data.slice(0);
+      let data = this.books$.value.slice(0);      
       let idx = data.findIndex(x => x.bookId == book.bookId);
       data.splice(idx,1);
-      this.dataSource = new MatTableDataSource<Book>(data);
+      this.books$.next(data);
     });
   }
 
@@ -70,7 +61,7 @@ export class BooksPageComponent {
         
         if (!result) return;
 
-        let data = this.dataSource.data.slice(0);
+        let data = this.books$.value.slice(0);
 
         let idx = data.findIndex(x => x.bookId == result.bookId);
 
@@ -80,7 +71,7 @@ export class BooksPageComponent {
           data[idx] = result;
         }
 
-        this.dataSource = new MatTableDataSource<Book>(data);
+        this.books$.next(data);
       }),
       takeUntil(this.onDestroy)
     )

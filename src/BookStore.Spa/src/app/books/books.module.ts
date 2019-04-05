@@ -6,7 +6,6 @@ import { CoreModule } from '../core/core.module';
 import { SharedModule } from '../shared/shared.module';
 import { BooksPageComponent } from './books-page.component';
 import { BookService } from './book.service';
-import { DigitalAssetsModule } from '../digital-assets/digital-assets.module';
 import { HttpClientModule } from '@angular/common/http';
 import { BookUpsertOverlayComponent } from './book-upsert-overlay.component';
 import { BookUpsertOverlay } from './book-upsert-overlay';
@@ -36,7 +35,6 @@ const providers = [
     RouterModule,
 
     CoreModule,
-    DigitalAssetsModule,
     SharedModule	
   ],
   providers,

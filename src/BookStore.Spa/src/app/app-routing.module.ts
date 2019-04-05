@@ -1,21 +1,30 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { BooksPageComponent } from './books/books-page.component';
-import { TagsPageComponent } from './tags/tags-page.component';
+import { MasterPageComponent } from './master-page.component';
+import { DashboardPageComponent } from './dashboard/dashboard-page.component';
 
 const routes: Routes = [
   {
     path:"",
-    component: BooksPageComponent    
+    component: MasterPageComponent,
+    children: [
+      {
+        path: '',
+        component: DashboardPageComponent,
+      }
+    ]
   },  
   {
     path:"books",
-    component: BooksPageComponent    
-  },
-  {
-    path:"tags",
-    component: TagsPageComponent    
-  } 
+    component: MasterPageComponent,
+    children: [
+      {
+        path: '',
+        component: BooksPageComponent,
+      }
+    ]     
+  }
 ];
 
 @NgModule({

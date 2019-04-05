@@ -4,23 +4,18 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CoreModule } from '../core/core.module';
 import { SharedModule } from '../shared/shared.module';
-import { TagsPageComponent } from './tags-page.component';
-import { TagUpsertOverlayComponent } from './tag-upsert-overlay.component';
-import { TagService } from './tag.service';
-import { TagUpsertOverlay } from './tag-upsert-overlay';
+import { DashboardPageComponent } from './dashboard-page.component';
 
 const declarations = [
-  TagsPageComponent,
-  TagUpsertOverlayComponent
+  DashboardPageComponent
 ];
 
 const entryComponents = [
-  TagUpsertOverlayComponent
+
 ];
 
 const providers = [
-  TagService,
-  TagUpsertOverlay
+
 ];
 
 @NgModule({
@@ -37,4 +32,4 @@ const providers = [
   ],
   providers,
 })
-export class TagsModule { }
+export class DashboardModule { }
