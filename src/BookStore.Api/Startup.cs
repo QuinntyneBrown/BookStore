@@ -18,28 +18,10 @@ namespace BookStore.Api
 
         public IConfiguration Configuration { get; }
 
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddCors(options => options.AddPolicy("CorsPolicy",
-                builder => builder
-                .WithOrigins("http://localhost:4200")
-                .AllowAnyMethod()
-                .AllowAnyHeader()
-                .SetIsOriginAllowed(isOriginAllowed: _ => true)
-                .AllowCredentials()));
+        public void ConfigureServices(IServiceCollection services) {
 
-            services.AddScoped<IAppDbContext, AppDbContext>();
-            
-            services.AddDbContext<AppDbContext>(options =>
-            {
-                options
-                .UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"], b => b.MigrationsAssembly("BookStore.Infrastructure"));
-            });
+            services.AddDependencies(Configuration);
 
-            services.AddMediatR(typeof(Startup));
-
-            services.AddHttpContextAccessor();
-            
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
