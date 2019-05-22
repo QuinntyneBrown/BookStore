@@ -8,6 +8,6 @@ namespace BookStore.Core.Interfaces
     public interface IAppDbContext
     {
         DbSet<Book> Books { get; }
-        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken));
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }
 }
